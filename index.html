@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website Builder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>🛠️ Website Builder</h1>
+  </header>
+
+  <main>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Components</h2>
+      <div class="draggable" draggable="true" data-type="text">📝 Text</div>
+      <div class="draggable" draggable="true" data-type="button">🔘 Button</div>
+      <div class="draggable" draggable="true" data-type="image">🖼️ Image</div>
+    </aside>
+
+    <!-- Canvas -->
+    <section class="canvas" id="dropArea">
+      <!-- Dropped items go here -->
+    </section>
+
+    <!-- Properties Panel -->
+    <aside class="properties">
+      <h2>🧩 Edit Element</h2>
+      <input type="text" id="textInput" placeholder="Text or Image URL" />
+      <input type="color" id="colorInput" />
+      <input type="number" id="sizeInput" placeholder="Font size in px" />
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
