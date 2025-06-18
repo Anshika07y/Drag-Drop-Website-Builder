@@ -28,7 +28,7 @@ canvas.addEventListener("drop", (e) => {
     item.textContent = "Editable Text";
   } else if (type === "button") {
     item.innerHTML = "<button>Edit Me</button>";
-    item.style.backgroundColor ="Red"
+    item.style.backgroundColor ="Blue"
   } else if (type === "image") {
     item.innerHTML = `<img src="https://via.placeholder.com/100" width="100" />`;
   }
