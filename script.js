@@ -5,12 +5,14 @@ const sizeInput = document.getElementById("sizeInput");
 
 let selected = null;
 
+// Drag start from sidebar
 document.querySelectorAll(".draggable").forEach((el) => {
   el.addEventListener("dragstart", (e) => {
     e.dataTransfer.setData("type", el.dataset.type);
   });
 });
 
+// Allow drop on canvas
 canvas.addEventListener("dragover", (e) => e.preventDefault());
 
 canvas.addEventListener("drop", (e) => {
@@ -28,7 +30,6 @@ canvas.addEventListener("drop", (e) => {
     item.textContent = "Editable Text";
   } else if (type === "button") {
     item.innerHTML = "<button>Edit Me</button>";
-    item.style.backgroundColor ="Blue"
   } else if (type === "image") {
     item.innerHTML = `<img src="https://via.placeholder.com/100" width="100" />`;
   }
@@ -45,10 +46,24 @@ function selectItem(item) {
   selected = item;
   selected.classList.add("selected");
 
-  const style = window.getComputedStyle(selected);
-  textInput.value = selected.textContent || "";
-  colorInput.value = rgbToHex(style.color);
-  sizeInput.value = parseInt(style.fontSize) || 16;
+  const img = selected.querySelector("img");
+  const btn = selected.querySelector("button");
+
+  if (img) {
+    textInput.value = img.src;
+    colorInput.value = "#000000"; // no color for image
+    sizeInput.value = parseInt(img.style.width) || 100;
+  } else if (btn) {
+    textInput.value = btn.textContent;
+    const style = window.getComputedStyle(btn);
+    colorInput.value = rgbToHex(style.backgroundColor);
+    sizeInput.value = parseInt(style.fontSize) || 16;
+  } else {
+    textInput.value = selected.textContent;
+    const style = window.getComputedStyle(selected);
+    colorInput.value = rgbToHex(style.color);
+    sizeInput.value = parseInt(style.fontSize) || 16;
+  }
 }
 
 function makeMovable(item) {
@@ -79,17 +94,43 @@ textInput.addEventListener("input", () => {
   const img = selected.querySelector("img");
   const btn = selected.querySelector("button");
 
-  if (img) img.src = textInput.value;
-  else if (btn) btn.textContent = textInput.value;
-  else selected.textContent = textInput.value;
+  if (img) {
+    img.src = textInput.value;
+  } else if (btn) {
+    btn.textContent = textInput.value;
+  } else {
+    selected.textContent = textInput.value;
+  }
 });
 
 colorInput.addEventListener("input", () => {
-  if (selected) selected.style.color = colorInput.value;
+  if (!selected) return;
+
+  const btn = selected.querySelector("button");
+
+  if (btn) {
+    btn.style.backgroundColor = colorInput.value;
+    btn.style.color = "#fff";
+  } else {
+    selected.style.color = colorInput.value;
+  }
 });
 
 sizeInput.addEventListener("input", () => {
-  if (selected) selected.style.fontSize = sizeInput.value + "px";
+  if (!selected) return;
+
+  const img = selected.querySelector("img");
+  const btn = selected.querySelector("button");
+  const size = sizeInput.value + "px";
+
+  if (img) {
+    img.style.width = size;
+    img.style.height = "auto";
+  } else if (btn) {
+    btn.style.fontSize = size;
+  } else {
+    selected.style.fontSize = size;
+  }
 });
 
 function rgbToHex(rgb) {
